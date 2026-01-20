@@ -3,7 +3,7 @@ import { MapPin } from "lucide-react";
 
 // import { Property } from "@prisma/client";
 
-interface PropertyCardProps {
+interface ListingCardProps {
     property: {
         id: string;
         title: string;
@@ -11,11 +11,11 @@ interface PropertyCardProps {
         address: string;
         region: string;
         imageUrl?: string | null;
-        status: string; // Explicitly added status
+        status: string;
     };
 }
 
-export default function PropertyCard({ property }: PropertyCardProps) {
+export default function ListingCard({ property }: ListingCardProps) {
     return (
         <Link href={`/properties/${property.id}`} className="group block">
             <div className="overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-md border border-gray-100">

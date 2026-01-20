@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import PropertyCard from "@/components/PropertyCard";
+import ListingCard from "@/components/ListingCard";
 import Link from "next/link";
 import { clsx } from "clsx";
 
@@ -85,7 +85,7 @@ export default async function Home({
       {properties.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {properties.map((property) => (
-            <PropertyCard key={property.id} property={property} />
+            <ListingCard key={property.id} property={property} />
           ))}
         </div>
       ) : (

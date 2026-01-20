@@ -43,7 +43,7 @@ export default async function Home({
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-8 text-center">
         <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl">
-          내가 찾던 <span className="text-blue-600">완벽한 공간</span>
+          <span className="text-blue-600">쉽고 빠르게</span> 물건을 공유하세요
         </h1>
         <p className="mt-4 text-xl text-gray-500">
           전국 어디서나 원하는 매물을 쉽고 빠르게 찾아보세요.

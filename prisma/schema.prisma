@@ -28,6 +28,7 @@ model Property {
   detailAddress String?
   region        String
   imageUrl    String?
+  status        String   @default("AVAILABLE") // AVAILABLE, SOLD
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   ownerId     String

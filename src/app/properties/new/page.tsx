@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useState, useEffect } from "react";
 import { createProperty } from "@/app/actions/property";
 import AddressSearch from "@/components/AddressSearch";
 import ImageUpload from "@/components/ImageUpload";
@@ -10,6 +10,22 @@ export default function NewPropertyPage() {
     const [addressData, setAddressData] = useState<any>(null);
     const [showAddressSearch, setShowAddressSearch] = useState(false);
     const [imageUrl, setImageUrl] = useState("");
+
+    const formState = state as any;
+
+    // Restore state on error
+    useEffect(() => {
+        if (formState?.address) {
+            setAddressData({
+                fullAddress: formState.address,
+                sido: formState.region,
+                // Partial data restoration
+            });
+        }
+        if (formState?.imageUrl) {
+            setImageUrl(formState.imageUrl);
+        }
+    }, [state]);
 
     const handleAddressComplete = (data: any) => {
         setAddressData(data);
@@ -35,6 +51,7 @@ export default function NewPropertyPage() {
                         name="title"
                         id="title"
                         required
+                        defaultValue={formState?.title as string}
                         className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
                         placeholder="예: 강남역 도보 5분 쾌적한 오피스텔"
                     />
@@ -50,6 +67,7 @@ export default function NewPropertyPage() {
                         id="price"
                         required
                         min="0"
+                        defaultValue={formState?.price as string}
                         className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
                         placeholder="예: 10000"
                     />
@@ -87,6 +105,7 @@ export default function NewPropertyPage() {
                             type="text"
                             name="detailAddress"
                             placeholder="상세 주소 (동, 호수 등)"
+                            defaultValue={formState?.detailAddress as string}
                             className="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
                         />
                     )}
@@ -122,6 +141,7 @@ export default function NewPropertyPage() {
                         id="description"
                         rows={5}
                         required
+                        defaultValue={formState?.description as string}
                         className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
                         placeholder="매물에 대한 자세한 설명을 입력해주세요."
                     />
@@ -131,7 +151,7 @@ export default function NewPropertyPage() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                         이미지
                     </label>
-                    <ImageUpload onImageUploaded={setImageUrl} />
+                    <ImageUpload defaultValue={formState?.imageUrl as string} onImageUploaded={setImageUrl} />
                     <input type="hidden" name="imageUrl" value={imageUrl} />
                 </div>
 

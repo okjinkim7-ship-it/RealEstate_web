@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState, useEffect } from "react";
+import Link from "next/link";
 import { updateProperty } from "@/app/actions/property";
 import AddressSearch from "@/components/AddressSearch";
 import { useRouter } from "next/navigation";
@@ -143,25 +144,37 @@ export default function EditPropertyPage({ params, property }: { params: { id: s
                     <ImageUpload defaultValue={imageUrl} onImageUploaded={setImageUrl} />
                     <input type="hidden" name="imageUrl" value={imageUrl} />
                 </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                        거래 상태
+                    </label>
+                    <select
+                        name="status"
+                        defaultValue={property.status || "AVAILABLE"}
+                        className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+                    >
+                        <option value="AVAILABLE">판매 중</option>
+                        <option value="SOLD">거래 완료</option>
+                    </select>
+                </div>
 
                 {state?.error && (
                     <div className="text-sm text-red-600">{state.error}</div>
                 )}
 
-                <div className="pt-4 flex space-x-3">
+                <div className="pt-4 flex justify-end gap-4">
+                    <Link
+                        href={`/properties/${property.id}`}
+                        className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    >
+                        취소
+                    </Link>
                     <button
                         type="submit"
                         disabled={isPending}
-                        className="flex-1 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                        className="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
                     >
-                        {isPending ? "수정 중..." : "수정 완료"}
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => window.history.back()}
-                        className="flex-1 flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    >
-                        취소
+                        {isPending ? "저장 중..." : "저장하기"}
                     </button>
                 </div>
             </form>

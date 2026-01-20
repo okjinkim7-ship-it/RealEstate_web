@@ -102,7 +102,7 @@ export default function ImageUpload({ defaultValue, onImageUploaded }: ImageUplo
                             alt="Preview"
                             className="w-full h-full object-contain rounded-md"
                         />
-                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-center justify-center">
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all flex items-center justify-center">
                             <div className="opacity-0 group-hover:opacity-100 flex flex-col items-center text-white">
                                 <Upload className="h-6 w-6 mb-1" />
                                 <span className="text-sm">Click or Drop to change</span>

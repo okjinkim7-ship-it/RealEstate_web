@@ -70,9 +70,16 @@ export default async function PropertyDetailPage({
                         <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                             {property.title}
                         </h1>
-                        <p className="mt-4 text-3xl font-bold text-blue-600">
-                            {property.price.toLocaleString()} 만원
-                        </p>
+                        <div className="mt-4 flex items-center justify-between">
+                            <p className="text-3xl font-bold text-blue-600">
+                                {property.price.toLocaleString()} 만원
+                            </p>
+                            {property.status === "SOLD" && (
+                                <span className="inline-flex items-center rounded-full bg-red-100 px-3 py-0.5 text-sm font-medium text-red-800">
+                                    거래 완료
+                                </span>
+                            )}
+                        </div>
                     </div>
 
                     <div className="py-6">
@@ -120,15 +127,12 @@ export default async function PropertyDetailPage({
                     </div>
 
                     <div className="mt-8 flex gap-4">
-                        <button className="flex-1 rounded-md border border-transparent bg-blue-600 px-8 py-3 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                            문의하기 (준비중)
-                        </button>
                         {isOwner && (
                             <Link
                                 href={`/properties/${property.id}/edit`}
-                                className="flex-none rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                className="flex-1 rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-center"
                             >
-                                수정
+                                수정하기
                             </Link>
                         )}
                     </div>

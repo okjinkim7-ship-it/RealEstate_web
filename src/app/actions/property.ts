@@ -7,13 +7,14 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 const PropertySchema = z.object({
-    title: z.string().min(3),
-    description: z.string().min(10),
-    price: z.coerce.number().min(0),
+    title: z.string().min(3, "제목은 3자 이상 입력해주세요."),
+    description: z.string().min(10, "설명은 10자 이상 입력해주세요."),
+    price: z.coerce.number().min(0, "가격은 0원 이상이어야 합니다."),
     address: z.string(),
     detailAddress: z.string().optional(),
     region: z.string(),
     imageUrl: z.string().optional(),
+    status: z.string().optional(),
 });
 
 export async function createProperty(prevState: any, formData: FormData) {
@@ -22,13 +23,13 @@ export async function createProperty(prevState: any, formData: FormData) {
         return { error: "로그인이 필요합니다." };
     }
 
-    const validatedFields = PropertySchema.safeParse(
-        Object.fromEntries(formData.entries())
-    );
+    const rawData = Object.fromEntries(formData.entries());
+    const validatedFields = PropertySchema.safeParse(rawData);
 
     if (!validatedFields.success) {
         return {
-            error: "입력값이 올바르지 않습니다.",
+            error: validatedFields.error.issues[0].message,
+            ...rawData,
         };
     }
 
@@ -50,6 +51,7 @@ export async function createProperty(prevState: any, formData: FormData) {
     } catch (error) {
         return {
             error: "매물 등록 중 오류가 발생했습니다.",
+            ...rawData,
         };
     }
 
@@ -69,11 +71,11 @@ export async function updateProperty(id: string, prevState: any, formData: FormD
 
     if (!validatedFields.success) {
         return {
-            error: "입력값이 올바르지 않습니다.",
+            error: validatedFields.error.issues[0].message,
         };
     }
 
-    const { title, description, price, address, detailAddress, region, imageUrl } = validatedFields.data;
+    const { title, description, price, address, detailAddress, region, imageUrl, status } = validatedFields.data;
 
     try {
         const property = await prisma.property.findUnique({
@@ -93,6 +95,7 @@ export async function updateProperty(id: string, prevState: any, formData: FormD
                 detailAddress,
                 region,
                 imageUrl,
+                status: status || property.status, // Update status if provided
             },
         });
     } catch (error) {

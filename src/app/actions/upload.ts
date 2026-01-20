@@ -26,10 +26,12 @@ export async function uploadImage(formData: FormData) {
         try {
             // Compress image if larger than 2MB
             // Resize to max width 1920px, convert to JPEG with 80% quality
-            buffer = await sharp(buffer)
+            const outputBuffer = await sharp(buffer)
                 .resize(1920, null, { withoutEnlargement: true })
                 .jpeg({ quality: 80 })
-                .toBuffer() as unknown as Buffer;
+                .toBuffer();
+
+            buffer = Buffer.from(outputBuffer);
 
             // Force extension to jpg since we converted it
             ext = "jpg";

@@ -1,10 +1,18 @@
 import Link from "next/link";
 import { MapPin } from "lucide-react";
 
-import { Property } from "@prisma/client";
+// import { Property } from "@prisma/client";
 
 interface PropertyCardProps {
-    property: Property;
+    property: {
+        id: string;
+        title: string;
+        price: number;
+        address: string;
+        region: string;
+        imageUrl?: string | null;
+        status: string; // Explicitly added status
+    };
 }
 
 export default function PropertyCard({ property }: PropertyCardProps) {

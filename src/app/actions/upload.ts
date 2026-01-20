@@ -1,9 +1,7 @@
 "use server";
 
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
+import { put } from "@vercel/blob";
 import { v4 as uuidv4 } from "uuid";
-
 import sharp from "sharp";
 
 export async function uploadImage(formData: FormData) {
@@ -39,23 +37,17 @@ export async function uploadImage(formData: FormData) {
             console.log(`Image compressed. Original size: ${file.size}, New size: ${buffer.length}`);
         } catch (error) {
             console.error("Compression failed:", error);
-            // Fallback to original buffer if compression fails, or you could return error
+            // Fallback to original buffer if compression fails
         }
     }
 
-    // Ensure uploads directory exists
-    const uploadDir = join(process.cwd(), "public", "uploads");
     try {
-        await mkdir(uploadDir, { recursive: true });
-    } catch (e) {
-        // Ignore error if it already exists
-    }
+        // Upload to Vercel Blob
+        const blob = await put(filename, buffer, {
+            access: 'public',
+        });
 
-    const filepath = join(uploadDir, filename);
-
-    try {
-        await writeFile(filepath, buffer);
-        return { url: `/uploads/${filename}` };
+        return { url: blob.url };
     } catch (error) {
         console.error("Upload error:", error);
         return { error: "Upload failed" };

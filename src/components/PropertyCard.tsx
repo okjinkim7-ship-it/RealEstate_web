@@ -9,6 +9,7 @@ interface PropertyCardProps {
         address: string;
         region: string;
         imageUrl?: string | null;
+        status: string;
     };
 }
 
